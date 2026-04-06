@@ -15,7 +15,6 @@ public static void main(String[] args) {
 			}
 		}
 	}
-	
 	System.out.println( (verifi == true)?"O numero: "+num+" é Primo!!":"O numero: "+num+" Não é primo!!");
 }
 }
