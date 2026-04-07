@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class window {
-	public static void main(String[] args) throws InterruptedException, IOException {
-		windowIndex();
-	}
 // ------------------------------------------------------------------------------------------------------
 	public static void windowIndex() throws InterruptedException, IOException {
 		process.clearTerminal();
