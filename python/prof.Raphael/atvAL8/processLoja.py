@@ -1,10 +1,3 @@
-resp = []
-# resposta | idade
+a,b,c = 0,1,2
 
-class minhaClass:    
-    def __init__(self, resposta, idade):
-        self.resposta = resposta
-        self.idade = idade
-    
-    def listA(self):
-        print("Terminar.....")
+print(b)
