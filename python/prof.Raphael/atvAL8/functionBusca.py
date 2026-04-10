@@ -18,7 +18,7 @@ def testeFunction():
 teste = [
   ["Wolverine", 5],
   ["Deadpool", 3],
-  ["Wolverine", 5],
+  ["Wolverine", 10],
   ["Deadpool", 2],
   ["Fantasma", 13],
   ["Deadpool", 2],
@@ -30,20 +30,12 @@ list = teste
 for i in list:
     todos.append({"posicao": buscaSeq(list, i[0]), "ponto": i[1]})
 
-# print(posicoes)
-# print(valores)
-# print(todos)
 newList = []
 for i, t in enumerate(todos, start=1):
-    qntPosicao.append(t["posicao"])
-    # print(i, " - ",t["posicao"], " -- quantidade: ")
+    print(i, "- posição:",t["posicao"], "ponto:", t["ponto"])
+
+# print(msg)
+# print(msg1)
+# print(todos[0]["ponto"])
 
 
-
-# Wolverine - 0  =  5
-# Deadpool - 1  =  3
-# Wolverine - 0  =  5
-# Deadpool - 1  =  2
-# Fantasma - 4  =  13
-# Deadpool - 1  =  2
-# Fantasma - 4  =  13
