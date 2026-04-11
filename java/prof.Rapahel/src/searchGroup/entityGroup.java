@@ -1,31 +1,49 @@
 package searchGroup;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class entityGroup {
+	private int id;
 	private String nome;
 	private int ponto;
 // ------------------------------------------------	
-	public static ArrayList<entityGroup> getGroup(ArrayList<entityGroup> groups){
+	public ArrayList<entityGroup> getAllGroup(ArrayList<entityGroup> groups){
 		ArrayList<entityGroup> bugFix = new ArrayList<entityGroup>();
+		ArrayList<Integer> ids = new ArrayList<Integer>();
 		for(entityGroup group: groups) {
 			entityGroup newGroup = new entityGroup();
 			int ponto = group.getPonto();
-			
-			for (int i = 1; i < groups.size(); i++) {
-				if (group.getNome() == groups.get(i).getNome()) {
-					ponto += groups.get(i).getPonto();
+			for (entityGroup listVerific: groups) {
+				if(group.getId() == listVerific.getId()) {
+					continue;
 				}
+				if (group.getNome().equalsIgnoreCase(listVerific.getNome())) {
+						ponto += listVerific.getPonto();
+				}
+
 			}
-			
+			newGroup.setId(group.id);
 			newGroup.setNome(group.getNome());
 			newGroup.setPonto(ponto);
 			bugFix.add(newGroup);
 		}
-		
-	return bugFix;
-}
+		return bugFix;
+	}
+
+	public String[] getGroup(String nome, ArrayList<entityGroup> groups){
+		String[] group = new String[2];
+		for(entityGroup group1: groups) {
+			if(nome.toLowerCase().equals(group1.getNome().toLowerCase())) {
+				group[0] = group1.getNome();
+				group[1] = String.valueOf(group1.getPonto());
+			}else{continue;}
+		}
+		return group;
+	}
+
 	
 // ------------------------------------------------
 	public String getNome() {
@@ -39,5 +57,11 @@ public class entityGroup {
 	}
 	public void setPonto(int ponto) {
 		this.ponto = ponto;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }
