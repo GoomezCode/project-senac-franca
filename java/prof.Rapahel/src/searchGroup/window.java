@@ -8,6 +8,7 @@ public class window {
 	public static entityGroup getGroups = new entityGroup();
 	public static ArrayList<entityGroup> groups = new ArrayList<entityGroup>();
 public static void main(String[] args) {
+
 	for(int i = 0; i <5; i++) {
 		entityGroup group = new entityGroup();
 		group.setId(i+1);
@@ -15,7 +16,6 @@ public static void main(String[] args) {
 		group.setPonto( (int) Math.round(Math.random()*9));
 		groups.add(group);
 	}
-
 
 	System.out.println(getAllGroups());
 }
