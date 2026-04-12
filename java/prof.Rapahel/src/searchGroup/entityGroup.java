@@ -2,8 +2,6 @@ package searchGroup;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class entityGroup {
 	private int id;

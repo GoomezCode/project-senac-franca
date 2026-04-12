@@ -11,6 +11,7 @@ def getAllGroup(list):
 
     for i in list:
         todos.append({"posicao": buscaSeq(list, i[0]), "ponto": i[1]})
+        
     newList = []
     for i, t in enumerate(todos, start=1):
         ponto = t["ponto"]
@@ -54,9 +55,11 @@ teste = [
   ["Wolverine", 30]
 ]
 
-nome = "Aranha"
-if getGroup(teste, nome) != None:
-    print(getGroup(teste, nome)[0], " | ", getGroup(teste, nome)[1])
-else:    print("Grupo não encontrado!!")
+# nome = "Aranha"
+# if getGroup(teste, nome) != None:
+#     print(getGroup(teste, nome)[0], " | ", getGroup(teste, nome)[1])
+# else:    print("Grupo não encontrado!!")
 
+for i in getAllGroup(teste):
+    print(i["nome"], " | ", i["ponto"])
 #   -------------------- TESTE --------------------

@@ -1,7 +1,6 @@
 package searchGroup;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -25,7 +24,6 @@ public static void main(String[] args) {
 		StringBuilder window = new  StringBuilder();
 		ArrayList<String> ordenar = new  ArrayList<>();
 		for(entityGroup group : getGroups.getAllGroup(groups)) {
-
 			ordenar.add(group.getNome());
 		}
 		List<String> listaSemDuplicados = new ArrayList<>(new LinkedHashSet<>(ordenar));
