@@ -71,6 +71,7 @@ while True:
         os.system("cls") if os.name == "nt" else os.system("clear")
         print("Entrada inválida!! \nPor favor, digite um número.")
         print("")
+    
     try:
         if option == 1:
             os.system("cls") if os.name == "nt" else os.system("clear")
