@@ -49,6 +49,7 @@ grupos = [
     ["fantasma", 80]
   ]
 os.system("cls") if os.name == "nt" else os.system("clear")
+option = 2000
 while True:
     try:
         nums = [1, 2, 3, 4]
