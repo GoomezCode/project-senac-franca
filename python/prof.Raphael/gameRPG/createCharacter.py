@@ -10,6 +10,7 @@ agilidade = 0
 inteligencia = 0
 sorte = 0
 distribuir = 20
+maiorAt = 0
 
 # ------------------------ Function ------------------------
 def vOpcao(opcao, nStatus):
@@ -46,42 +47,49 @@ def getClass(status):
         return "Mago"
     else:
         return "Aventureiro"
-# ------------------------ Function ------------------------
 
+def addAtributos(i):
+    global distribuir
+    global maiorAt
 
-maiorAt = 0
-while True:
-    try:
-        for i in status:
+    while True: 
+        try:
             if distribuir == 0:
                 distribuir = 20
                 raise ValueError("Os pontos não fui distribuido corretamente")
+        
+            print(f"Pontos: {distribuir}")
+            print("")
+            op = int(input(f"{i}: "))
             
-            while True: 
-                print(f"Pontos: {distribuir}")
-                print("")
-                op = int(input(f"{i}: "))
-                
-                if op > 10 or op <= 0:
-                    os.system("cls") if os.name == "nt" else os.system("clear")
-                    print(f"Digite numero válido! \nTente novamente!")
-                    print("")
-                    continue
-                    # raise ValueError("Numero Não está entre 1 e 10")
-                if op < 10 or op <= 0:
-                    if op > maiorAt:
-                        maiorAt = op
-                    
-                vOpcao(op, i)
+            if op > 10 or op <= 0:
                 os.system("cls") if os.name == "nt" else os.system("clear")
-                
-                if distribuir < 0:
-                    distribuir = 20
-                    raise ValueError("Os pontos não fui distribuido corretamente")
-                break
-                
+                print(f"Digite numero válido! \nTente novamente!")
+                print("")
+                continue
+                # raise ValueError("Numero Não está entre 1 e 10")
+            if op < 10 or op <= 0:
+                if op > maiorAt:
+                    maiorAt = op
+            vOpcao(op, i)
+            os.system("cls") if os.name == "nt" else os.system("clear")
             
-                
+            if distribuir < 0:
+                distribuir = 20
+                raise ValueError("Os pontos não fui distribuido corretamente")
+            break
+        except ValueError as e:
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            print(f"{e} \nDigite numero válido! \nFaça novamente!")
+            print("")
+# ------------------------ Function ------------------------
+
+
+
+while True:
+    try:
+        for i in status:
+            addAtributos(i)
     except ValueError as e:
         distribuir = 20
         os.system("cls") if os.name == "nt" else os.system("clear")
@@ -89,6 +97,7 @@ while True:
         print("")
     else:
         break
+
 
 statusPerson = [
     {"name": name}, # 0
