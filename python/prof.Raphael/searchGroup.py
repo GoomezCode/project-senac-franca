@@ -79,7 +79,7 @@ while True:
             print("----- Add Group -----")
             nome = input("Digite o nome do grupo: ").lower()
             ponto = int(input("Digite o ponto do grupo: "))
-            grupos.append([nome, ponto])
+            grupos.append( [nome, ponto])
             os.system("cls") if os.name == "nt" else os.system("clear")
             print(f"Grupo '{nome}' adicionado com {ponto} pontos!")
             print("")
