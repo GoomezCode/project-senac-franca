@@ -47,3 +47,14 @@ def randomName():
     ]
     return f"{random.choice(prefixos)}{random.choice(sufixos)} {random.choice(prefixos)}{random.choice(sufixos)}"
 
+
+# tem que retornar 4 valores aleatorios que somados dão o valor do ponto e retornar o nome
+
+def randomPlayer():
+    ponto = 20
+    nome = randomName()
+    while True:
+        num = [random.randint(1, 10) for n in range(4)]
+        if sum(num) <= ponto:
+            break
+    return nome, num[0], num[1], num[2], num[3]
