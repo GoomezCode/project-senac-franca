@@ -1,10 +1,11 @@
 import os
+from imgPersonagem import mostrar_classes
 # name = input("Digite o nome do personagem: ")
 
 
 status = ["forca", "agilidade", "inteligencia", "sorte"]
 statusPerson = []
-id = len(statusPerson)
+id = 0
 forca = 0
 agilidade = 0
 inteligencia = 0
@@ -12,7 +13,7 @@ sorte = 0
 distribuir = 20
 maiorAt = 0
 
-def createPlayer(name):
+def createPlayer(name,s1,s2,s3,s4):
     global status
     global statusPerson
     global id
@@ -63,9 +64,9 @@ def createPlayer(name):
 
         while True: 
             try:
-                if distribuir < 0:
-                    distribuir = 20
-                    raise ValueError("Os pontos não fui distribuido corretamente")
+                if distribuir <= 0:
+                    raise AttributeError("Os pontos não fui distribuido corretamente")
+                    
             
                 print(f"Pontos: {distribuir}")
                 print("")
@@ -82,30 +83,42 @@ def createPlayer(name):
                         maiorAt = op
                 vOpcao(op, i)
                 os.system("cls") if os.name == "nt" else os.system("clear")
-                
                 if distribuir < 0:
-                    distribuir = 20
-                    raise ValueError("Os pontos não fui distribuido corretamente")
+                    raise AttributeError("Os pontos não fui distribuido corretamente")
                 break
             except ValueError as e:
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 print(f"{e} \nDigite numero válido! \nFaça novamente!")
                 print("")
+            except AttributeError as e:
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                print(f"{e}")
+                return 404
+                
     # ------------------------ Function ------------------------
-
-    while True:
-        try:
-            for i in status:
-                print(f"Informe o status do {name} de 1 a 10")
+    if s1 == 0: 
+        while True:
+            try:
+                for i in status:
+                    print(f"Informe o status do {name} de 1 a 10")
+                    print("")
+                    
+                    if addAtributos(i) == 404:
+                        raise ValueError("erro: 404 \nDistribuição incorreta!")
+            except ValueError as e:
+                distribuir = 20
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                print(f"{e} \nFaça novamente!")
                 print("")
-                addAtributos(i)
-        except ValueError as e:
-            distribuir = 20
-            os.system("cls") if os.name == "nt" else os.system("clear")
-            print(f"{e} \nDigite numero válido! \nFaça novamente!")
-            print("")
-        else:
-            break
+            else:
+                break
+    else:
+        forca = s1
+        agilidade = s2
+        inteligencia = s3
+        sorte = s4
+        maiorAt = max([s1,s2,s3,s4])
+        distribuir = 20 - sum([s1,s2,s3,s4])
 
     statusPerson.append({
         "name": name,
@@ -119,20 +132,21 @@ def createPlayer(name):
     statusPerson[id]["class"] = getClass(statusPerson)
     statusPerson[id]["ponto"] = distribuir
 
+    id += 1
+    distribuir = 20
 
-    def getAllPlayer():
-        for i in statusPerson:
-            print(f"""
-            ------------- Status Personagem -------------
-            Nome: {i["name"]}
-
-            forca: {i["forca"]}
-            agilidade: {i["agilidade"]}
-            inteligencia: {i["inteligencia"]}
-            sorte: {i["sorte"]}
-            class: {i["class"]}
-
-            pontos: {i["ponto"]}
-            ------------- Status Personagem -------------
-        """)
     
+def getAllPlayer():
+    for i in statusPerson:
+        print(f"""
+{15*"---"}
+Nome: {i["name"]}
+forca: {i["forca"]}
+agilidade: {i["agilidade"]}
+inteligencia: {i["inteligencia"]}
+sorte: {i["sorte"]}
+class: {i["class"]} {mostrar_classes(i["class"])}
+pontos: {i["ponto"]}
+{15*"---"}
+    
+    """)

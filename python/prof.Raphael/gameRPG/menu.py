@@ -1,4 +1,4 @@
-from v3_createCharacter import createPlayer
+from v3_createCharacter import createPlayer, getAllPlayer, statusPerson
 import randomPlayer
 import os
 
@@ -12,12 +12,12 @@ def windowCreate():
         os.system("cls") if os.name == "nt" else os.system("clear")
         print(5*"---","create player",5*"---")
         print("")
-        createPlayer(randomPlayer.randomName())
+        createPlayer(randomPlayer.randomName(), 0, 0, 0, 0)
     else:
         os.system("cls") if os.name == "nt" else os.system("clear")
         print(5*"---","create player",5*"---")
         print("")
-        createPlayer(name)
+        createPlayer(name,0, 0, 0, 0)
 
 os.system("cls") if os.name == "nt" else os.system("clear")
 while True:
@@ -38,6 +38,24 @@ while True:
 
         if opc == 1:
             windowCreate()
+        if opc == 2:
+            os.system("cls") if os.name == "nt" else os.system("clear")
+            name, s1,s2,s3,s4 = randomPlayer.randomPlayer()
+            createPlayer(name,s1,s2,s3,s4)    
+            print(f"O jogador {name} foi criado!!")
+            print("")
+        if opc == 3:
+            if len(statusPerson) > 0:
+                os.system("cls") if os.name == "nt" else os.system("clear")
+                print("------------- Status Personagem -------------")
+                getAllPlayer()
+                print("------------- Status Personagem -------------")
+                print("")
+                print("")
+            else:
+                os.system("cls") if os.name == "nt" else os.system("clear")    
+                print("Não tem player cadastrado...")
+                print("")
         if opc == 0:
             os.system("cls") if os.name == "nt" else os.system("clear")
             print("Sistema finalizado....")
