@@ -1,0 +1,16 @@
+{
+  // "editor.fontFamily": "Monaspace Radona,'Courier New', monospace",
+  // "editor.fontLigatures": "'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09'",
+  // "editor.fontWeight": 800
+
+  
+  "editor.fontFamily": "'Monaspace Radon Var'",
+  "editor.fontVariations": "'wdth' 125, 'wght' 800",
+  "editor.fontLigatures": "'calt', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'ss10', 'liga'",
+  "editor.formatOnSave": true,
+  "editor.fontWeight": 800,
+  "editor.fontSize": 15,
+  "editor.mouseWheelZoom": true,
+  "terminal.integrated.mouseWheelZoom": true,
+  "terminal.integrated.fontSize": 23,
+}
