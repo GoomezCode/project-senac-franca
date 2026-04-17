@@ -18,6 +18,11 @@ def createPlayer(name,s1,s2,s3,s4):
     global statusPerson
     global id
     global distribuir
+    global forca
+    global agilidade
+    global inteligencia
+    global sorte
+    global maiorAt
     
     # ------------------------ Function ------------------------
     def vOpcao(opcao, nStatus):
@@ -77,14 +82,15 @@ def createPlayer(name,s1,s2,s3,s4):
                     print(f"Digite numero válido! \nTente novamente!")
                     print("")
                     continue
-                    
-                if op < 10 or op <= 0:
-                    if op > maiorAt:
-                        maiorAt = op
+                        
                 vOpcao(op, i)
+                
                 os.system("cls") if os.name == "nt" else os.system("clear")
                 if distribuir < 0:
-                    raise AttributeError("Os pontos não fui distribuido corretamente")
+                    raise ValueError("Os pontos não fui distribuido corretamente")
+                if op >= maiorAt:
+                    maiorAt = op
+                        
                 break
             except ValueError as e:
                 os.system("cls") if os.name == "nt" else os.system("clear")
