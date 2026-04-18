@@ -8,7 +8,7 @@ public class StudyString {
 
 //    System.out.println(String.format(
 //            "Olá %1$s %2$s você tem %3$d anos. Posso te chamar de %2$s?. você contem %4$.2f R$ é ganha %5$.2f R$",
-//            nome,sobrenome,idade,saldo,ganho));
+////            nome,sobrenome,idade,saldo,ganho));
 
         System.out.println("Welcome\"Here\"");
     }

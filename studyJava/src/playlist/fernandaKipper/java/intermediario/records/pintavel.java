@@ -1,4 +1,5 @@
 package playlist.fernandaKipper.java.intermediario.records;
 
-public class pintavel {
+public interface pintavel {
+void aplicarTinta();
 }
