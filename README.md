@@ -6,4 +6,5 @@
 
  ### 1. [Shortcuts Ides](https://github.com/GoomezCode/project-senac-franca/blob/before/Shortcuts.md)
  ### 2. [Commands for GitHub in Terminal](https://github.com/GoomezCode/project-senac-franca/blob/main/ComandosGits.md)
- ### 3. [Guia sintaxe Python (Iniciante)](https://github.com/GoomezCode/project-senac-franca/blob/main/Python_Guia_de_Sintaxes.md)
+ ### 3. [Guia sintaxe Python (Iniciante)](https://github.com/GoomezCode/project-senac-franca/blob/main/python/Guia_sintaxes.md)
+ ### 4. [Guia Exeções de erros Python](https://github.com/GoomezCode/project-senac-franca/blob/main/python/Gui_excecoes_erro.md)
