@@ -27,6 +27,15 @@ public class introducao {
         dicionario.put("propriotario","Teste");
 
         Queue<String> queue = new  LinkedList<>();
+        queue.add(dicionario.get("placa"));
+        queue.add(dicionario.get("modelo"));
+        queue.add(dicionario.get("valor"));
+        queue.add(dicionario.get("propriotario"));
+
+        LinkedList<String> linkedList = new LinkedList<>();
+        linkedList.add("Carro");
+        linkedList.add("Opala");
+        linkedList.add(1,"Diaa");
 
 
 
