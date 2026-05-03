@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0b0c32ae-79b2-4fba-a5d0-79d5ed0e21f4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/.settings/org.eclipse.core.resources.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atv3_3_6/atv3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atv3_3_6/atv6.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atv3_3_6/calCombustivel_atv6.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atv5_4/atv_4_5.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atv5_4/calcPagar_atv5.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atvPainelPet/main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atvPainelPet/process.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/atvPainelPet/window.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../teste/src/DesafioRaphael/numPrimos.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3DDyhUQmqioevikInIIWup7XGa4" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.App.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.main.java.App.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "225",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "before",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "H:/git/project-senac-franca/java/stockManager/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b0c32ae-79b2-4fba-a5d0-79d5ed0e21f4" name="Changes" comment="" />
+      <created>1777831058388</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1777831058388</updated>
+      <workItem from="1777831061928" duration="359000" />
+      <workItem from="1777831616918" duration="741000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
