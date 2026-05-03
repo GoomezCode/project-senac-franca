@@ -1,0 +1,15 @@
+**✅ Regras de Negócio:**
+- O código do produto deve ser único
+- Todos os campos obrigatórios devem ser preenchidos
+- A quantidade inicial não pode ser negativa
+- O preço unitário deve ser maior que zero
+- O estoque mínimo não pode ser negativo
+- NCM deve ter 8 dígitos (formato: XXXX.XX.XX)
+- CFOP deve ter 4 dígitos
+
+**🎯 Funcionalidades da Versão:**
+1. Função `cadastrar_produto()` para adicionar produtos
+2. Validação de código duplicado
+3. Validação de campos obrigatórios
+4. Validação de formato de NCM e CFOP
+5. Armazenamento em lista global `estoque`
