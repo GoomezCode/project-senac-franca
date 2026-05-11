@@ -1,36 +1,54 @@
+class livro:
+    def __init__(self, titulo):
+        self.titulo = titulo
+        self.disponivel = True
+        
 class leitor:
     def __init__(self, nome):
         self.nome = nome
         self.livros_na_mao = []
         
-    def pegar_livro(self, nome_do_livro):
+    def pegar_livro(self, livro_objeto):
+        
         if(len(self.livros_na_mao) >= 3):
             return "Limite atingido! Devolva um livro primeiro."
-        for n in self.livros_na_mao:
-            if(n.lower() == nome_do_livro.lower()):
+        for i in range(len(self.livros_na_mao)):
+            if(self.livros_na_mao[i].titulo in livro_objeto.titulo):
                 return "Você já está com este título!"
-            else: continue
-        self.livros_na_mao.append(nome_do_livro)
-        return "Empréstimo realizado!"
+        if(livro_objeto.disponivel):
+            self.livros_na_mao.append(livro_objeto)
+            livro_objeto.disponivel = False
+            return "Empréstimo realizado!"    
+        else:
+            return "O livro está indisponivel"
         
-    def devolver_livro(self, nome_do_livro):
-        for i,n in enumerate(self.livros_na_mao):
-            if(n.lower() == nome_do_livro.lower()):
-                self.livros_na_mao.pop(i)
+    def devolver_livro(self, livro_objeto):
+        for i in range(len(self.livros_na_mao)):
+            if(self.livros_na_mao[i].titulo.lower() == livro_objeto.titulo.lower()):
+                self.livros_na_mao.remove(livro_objeto.titulo)
                 return "Devolução feita!!"
-            else: continue
+            else: continue    
         return "Você não está com esse livro"
+        
 
+
+# ps1 = leitor("daniel")
+# ps2 = leitor("gabriel")
+
+# lv1 = livro("teste")
+# lv2 = livro("opa")
+# lv3 = livro("eita")
+# lv4 = livro("fiaa")
+
+# print(ps1.pegar_livro(lv1))
+
+lv1 = livro("dia")
+lv2 = livro("noite")
 
 ps1 = leitor("daniel")
 ps2 = leitor("gabriel")
 
-#ps3 = leitor("matheus", 5)
+print(ps1.pegar_livro(lv1))
+print(ps2.pegar_livro(lv1))
 
-print(ps1.pegar_livro("muito legal"))
-print(ps1.pegar_livro("muito chato"))
-print(ps1.pegar_livro("muito mas muito"))
-print(ps1.pegar_livro("muito mas ++ chato"))
-print(ps1.devolver_livro("MuITo LeGaL"))
-print(ps2.devolver_livro("Opaa"))
-print(ps2.pegar_livro("diaaa"))
+#ps3 = leitor("matheus", 5)
