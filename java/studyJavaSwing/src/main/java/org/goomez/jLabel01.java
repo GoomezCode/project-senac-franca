@@ -14,6 +14,7 @@ public class jLabel01 {
         txt01.setFont(new Font("Times New Roman", Font.BOLD, 20));
         txt01.setBorder(border);
 
+
         jFrame01 frame = new jFrame01();
         frame.getContentPane().setBackground(Color.white);
         frame.add(txt01);

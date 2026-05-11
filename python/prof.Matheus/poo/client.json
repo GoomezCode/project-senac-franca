@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nome": "daniel",
+    "nascimento": "10/09/2008",
+    "email": "daniel@gmail.com",
+    "cpf": "000.000.000-00"
+  },
+  {
+    "id": 2,
+    "nome": "gabriel",
+    "nascimento": "4/02/2012",
+    "email": "gabriel@gmail.com",
+    "cpf": "000.000.000-00"
+  },
+  {
+    "id": 3,
+    "nome": "Fabiano",
+    "nascimento": "10/09/2008",
+    "email": "daniel@gmail.com",
+    "cpf": "000.000.000-00"
+  },
+  {
+    "id": 4,
+    "nome": "Matheus",
+    "nascimento": "4/02/2012",
+    "email": "gabriel@gmail.com",
+    "cpf": "000.000.000-00"
+  },
+  {
+    "id": 5,
+    "nome": "fulano",
+    "nascimento": "10/09/2008",
+    "email": "daniel@gmail.com",
+    "cpf": "000.000.000-00"
+  },
+  {
+    "id": 6,
+    "nome": "betano",
+    "nascimento": "4/02/2012",
+    "email": "gabriel@gmail.com",
+    "cpf": "000.000.000-00"
+  }
+]
