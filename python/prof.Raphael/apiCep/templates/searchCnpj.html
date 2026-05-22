@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscar CNPJ</title>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: #e2e8f0;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background: #020617;
+    padding: 20px;
+    border-right: 1px solid #334155;
+}
+
+.sidebar h3 {
+    color: #3fa0ff;
+    margin-bottom: 15px;
+}
+
+.cnpj-item {
+    cursor: pointer;
+    margin-bottom: 10px;
+    color: #93c5fd;
+    font-size: 14px;
+}
+
+.cnpj-item:hover {
+    text-decoration: underline;
+}
+
+/* CONTEÚDO */
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+h2 {
+    text-align: center;
+    color: #3fa0ff;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+input.erro {
+    border-color: #f87171;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    background: #185FA5;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0C447C;
+}
+
+.resultado {
+    background: #020617;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.erro-msg {
+    color: #f87171;
+}
+
+.linha { margin-bottom: 6px; }
+.titulo { color: #93c5fd; }
+
+/* RESPONSIVO */
+@media(max-width: 800px){
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #334155;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h3>🏢 Exemplos</h3>
+
+    <div class="cnpj-item" onclick="setCNPJ('19131243000197')">Magazine Luiza</div>
+    <div class="cnpj-item" onclick="setCNPJ('27865757000102')">Nubank</div>
+    <div class="cnpj-item" onclick="setCNPJ('33000167000101')">Banco do Brasil</div>
+    <div class="cnpj-item" onclick="setCNPJ('35635824000112')">Shopee</div>
+    <div class="cnpj-item" onclick="setCNPJ('60546232000135')">Bradesco</div>
+
+</div>
+
+<!-- CONTEÚDO -->
+<div class="main">
+<div class="container">
+
+    <h2>🔎 Buscar CNPJ</h2>
+
+    <div class="input-group">
+        <input id="cnpj" placeholder="Digite o CNPJ">
+        <button onclick="buscarCNPJ()">Procurar</button>
+    </div>
+
+    <div id="resultado" class="resultado"></div>
+
+</div>
+</div>
+
+<script>
+function setCNPJ(valor) {
+    document.getElementById("cnpj").value = valor;
+}
+
+function validarCNPJ(cnpj) {
+    cnpj = cnpj.replace(/\D/g, "");
+    return /^[0-9]{14}$/.test(cnpj);
+}
+
+async function buscarCNPJ() {
+    const input = document.getElementById("cnpj");
+    const resultado = document.getElementById("resultado");
+
+    let cnpj = input.value.replace(/\D/g, "");
+    input.classList.remove("erro");
+
+    if (!cnpj) {
+        resultado.innerHTML = "<p class='erro-msg'>Digite um CNPJ</p>";
+        input.classList.add("erro");
+        return;
+    }
+
+    if (!validarCNPJ(cnpj)) {
+        resultado.innerHTML = "<p class='erro-msg'>CNPJ inválido</p>";
+        input.classList.add("erro");
+        return;
+    }
+
+    resultado.innerHTML = "Buscando...";
+
+    try {
+        const response = await fetch(`/api/BuscarCnpj?cnpj=${cnpj}`);
+        const data = await response.json();
+
+        if (!response.ok || !data.razao_social) {
+            resultado.innerHTML = "<p class='erro-msg'>CNPJ não encontrado</p>";
+            return;
+        }
+
+        resultado.innerHTML = `
+            <div class="linha"><span class="titulo">Empresa:</span> ${data.razao_social}</div>
+            <div class="linha"><span class="titulo">Fantasia:</span> ${data.nome_fantasia || "-"}</div>
+            <div class="linha"><span class="titulo">Situação:</span> ${data.descricao_situacao_cadastral}</div>
+            <div class="linha"><span class="titulo">Abertura:</span> ${data.data_inicio_atividade}</div>
+
+            <hr>
+
+            <div class="linha"><span class="titulo">Endereço:</span></div>
+            <div class="linha">${data.logradouro}, ${data.numero}</div>
+            <div class="linha">${data.bairro}</div>
+            <div class="linha">${data.municipio} - ${data.uf}</div>
+
+            <hr>
+
+            <div class="linha"><span class="titulo">Porte:</span> ${data.porte}</div>
+            <div class="linha"><span class="titulo">Capital:</span> R$ ${data.capital_social}</div>
+
+            <hr>
+
+            <div class="linha"><span class="titulo">Atividade:</span></div>
+            <div class="linha">${data.cnae_fiscal_descricao}</div>
+        `;
+    } catch (e) {
+        resultado.innerHTML = "<p class='erro-msg'>Erro de conexão</p>";
+    }
+}
+</script>
+
+</body>
+</html>

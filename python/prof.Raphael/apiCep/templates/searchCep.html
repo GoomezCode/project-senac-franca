@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscar CEP</title>
+
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: #1e293b;
+        padding: 25px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    h2 {
+        text-align: center;
+        color: #3fa0ff;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #334155;
+        background: #0f172a;
+        color: #e2e8f0;
+    }
+
+    input.erro-input {
+        border-color: #f87171;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        background: #185FA5;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #0C447C;
+    }
+
+    .resultado {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #020617;
+        border: 1px solid #334155;
+    }
+
+    .erro {
+        color: #f87171;
+        font-weight: bold;
+    }
+
+    .sucesso {
+        color: #4ade80;
+    }
+
+    .exemplos {
+        margin-top: 20px;
+        padding: 15px;
+        background: #020617;
+        border-radius: 10px;
+        border: 1px solid #334155;
+    }
+
+    .cep {
+        cursor: pointer;
+        color: #3fa0ff;
+        margin-bottom: 5px;
+    }
+
+    .cep:hover {
+        text-decoration: underline;
+    }
+
+    strong { color: #93c5fd; }
+
+    @media (max-width: 480px) {
+        .input-group { flex-direction: column; }
+        button { width: 100%; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>🔍 Buscar CEP</h2>
+
+    <div class="input-group">
+        <input type="text" id="cep" placeholder="Digite o CEP...">
+        <button onclick="buscarCep()">Procurar</button>
+    </div>
+
+    <div id="resultado" class="resultado"></div>
+
+    <div class="exemplos">
+        <strong>CEPs para teste:</strong>
+        <div class="cep" onclick="setCep('01310100')">Av. Paulista (SP)</div>
+        <div class="cep" onclick="setCep('04538133')">Google Brasil (SP)</div>
+        <div class="cep" onclick="setCep('22290240')">Rio corporativo</div>
+        <div class="cep" onclick="setCep('30130110')">BH centro</div>
+        <div class="cep" onclick="setCep('70040010')">Brasília</div>
+    </div>
+
+</div>
+
+<script>
+function setCep(valor) {
+    document.getElementById("cep").value = valor;
+}
+
+function validarCEP(cep) {
+    // Remove traços e espaços
+    cep = cep.replace(/\D/g, "");
+
+    // Verifica se tem 8 dígitos numéricos
+    return /^[0-9]{8}$/.test(cep);
+}
+
+async function buscarCep() {
+    const input = document.getElementById("cep");
+    const resultado = document.getElementById("resultado");
+
+    let cep = input.value.trim();
+    input.classList.remove("erro-input");
+
+    if (!cep) {
+        resultado.innerHTML = "<p class='erro'>⚠️ Digite um CEP</p>";
+        input.classList.add("erro-input");
+        return;
+    }
+
+    if (!validarCEP(cep)) {
+        resultado.innerHTML = "<p class='erro'>⚠️ CEP inválido (use 8 números)</p>";
+        input.classList.add("erro-input");
+        return;
+    }
+
+    resultado.innerHTML = "⏳ Buscando...";
+
+    try {
+        const response = await fetch(`/api/buscarCep?cep=${cep}`);
+        const data = await response.json();
+
+        // ❌ erro vindo do backend
+        if (!response.ok || data.erro || data.errors) {
+            resultado.innerHTML = "<p class='erro'>❌ CEP não encontrado</p>";
+            return;
+        }
+
+        // ❌ valida se os dados vieram vazios ou incompletos
+        if (
+            !data.city ||
+            !data.state ||
+            data.city.trim() === "" ||
+            data.state.trim() === ""
+        ) {
+            resultado.innerHTML = "<p class='erro'>❌ CEP não encontrado</p>";
+            return;
+        }
+
+        // ✅ sucesso → SEM mensagem, só dados
+        resultado.innerHTML = `
+            <strong>CEP:</strong> ${data.cep || "-"} <br>
+            <strong>Estado:</strong> ${data.state || "-"} <br>
+            <strong>Cidade:</strong> ${data.city || "-"} <br>
+            <strong>Bairro:</strong> ${data.neighborhood || "-"} <br>
+            <strong>Rua:</strong> ${data.street || "-"}
+        `;
+
+    } catch (erro) {
+        resultado.innerHTML = "<p class='erro'>🌐 Erro ao conectar com o servidor</p>";
+    }
+}
+</script>
+
+</body>
+</html>

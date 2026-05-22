@@ -1,19 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/style.css">
-    <title>teste</title>
+    <title>Buscar Pessoa</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #185FA5;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #185FA5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0C447C;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .erro {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    
-    <form action="/addPerson" method="post" class="container">
-        <h1>Create account</h1>
-        <input type="text" placeholder="Username" name="username">
-        <input type="password" placeholder="***********" name="password">
-        <button type="submit">Confirmar</button>
-    </form>
-    
+
+<div class="container">
+    <h1>Buscar Pessoa</h1>
+
+    <input type="text" id="nome" placeholder="Digite o nome...">
+    <button onclick="buscar()">Buscar</button>
+
+    <div id="resultado" class="resultado"></div>
+</div>
+
+<script>
+async function buscar() {
+    const nome = document.getElementById("nome").value;
+    const resultadoDiv = document.getElementById("resultado");
+
+    resultadoDiv.innerHTML = "Carregando...";
+
+    try {
+        const response = await fetch(`/buscarPerson?tipo=${encodeURIComponent(nome)}`);
+
+        const data = await response.json();
+
+        // Caso tenha erro
+        if (!response.ok) {
+            resultadoDiv.innerHTML = `<p class="erro">${data.Erro || data.erro}</p>`;
+            return;
+        }
+
+        // Monta lista de resultados
+        let html = "<ul>";
+
+        data.forEach(pessoa => {
+            html += "<li>";
+            for (let chave in pessoa) {
+                html += `<strong>${chave}:</strong> ${pessoa[chave]} <br>`;
+            }
+            html += "</li><hr>";
+        });
+
+        html += "</ul>";
+
+        resultadoDiv.innerHTML = html;
+
+    } catch (error) {
+        resultadoDiv.innerHTML = "<p class='erro'>Erro ao conectar com o servidor</p>";
+    }
+}
+</script>
+
 </body>
 </html>
