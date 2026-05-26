@@ -1,0 +1,228 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI';
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* 🌌 FUNDO ANIMADO */
+body::before {
+  content: "";
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, #1e3a8a, transparent 70%);
+  animation: spaceMove 20s linear infinite;
+  z-index: -1;
+}
+
+@keyframes spaceMove {
+  from { transform: translate(0,0); }
+  to { transform: translate(-50%, -50%); }
+}
+
+/* HEADER */
+header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(90deg, #185FA5, #3b82f6);
+  box-shadow: 0 0 20px #185FA5;
+}
+
+/* FILTROS */
+.filters {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 15px;
+}
+
+button, input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background: linear-gradient(135deg, #185FA5, #0C447C);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px cyan;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* 🎬 efeito Netflix */
+.grid:hover .card {
+  opacity: 0.3;
+  transform: scale(0.95);
+}
+
+.grid .card:hover {
+  opacity: 1;
+  transform: scale(1.15);
+  z-index: 10;
+}
+
+/* CARD */
+.card {
+  background: #020617;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+/* 💥 aura Saiyajin */
+.card:hover {
+  box-shadow:
+    0 0 20px cyan,
+    0 0 40px blue,
+    0 0 60px #0ea5e9;
+}
+
+/* ✨ partículas */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, cyan 2px, transparent 3px);
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.card:hover::after {
+  opacity: 0.25;
+}
+
+/* efeito clique */
+.card:active {
+  transform: scale(0.9);
+}
+
+/* IMAGEM */
+.card img {
+    width: 100%;
+    height: 250px;
+    object-fit: scale-down;
+}
+
+/* CONTEÚDO */
+.card-content {
+  padding: 10px;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  background: linear-gradient(145deg, #1f2937, #020617);
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 500px;
+  text-align: center;
+  animation: powerUp 0.5s;
+  box-shadow: 0 0 20px cyan, 0 0 40px blue;
+}
+
+.modal img {
+  width: 200px;
+  border-radius: 10px;
+}
+
+@keyframes powerUp {
+  0% { transform: scale(0.7); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 🌌 ESTRELAS */
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: white;
+  opacity: 0.6;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.2; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.5); }
+}
+
+/* ⚡ AURA SUPER SAIYAJIN */
+.card:hover {
+  animation: aura 1s infinite alternate;
+}
+
+@keyframes aura {
+  0% {
+    box-shadow: 0 0 10px cyan,
+                0 0 30px blue;
+  }
+  100% {
+    box-shadow: 0 0 20px #facc15,
+                0 0 50px orange,
+                0 0 80px gold;
+  }
+}
+
+/* 🌀 SHOCKWAVE */
+.shockwave {
+  position: fixed;
+  border-radius: 50%;
+  border: 2px solid cyan;
+  animation: wave 0.6s forwards;
+}
+
+@keyframes wave {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(15);
+    opacity: 0;
+  }
+}
+
+/* 💫 RASTRO DO MOUSE */
+.trail {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: cyan;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: fadeTrail 0.5s forwards;
+}
+
+@keyframes fadeTrail {
+  to {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
