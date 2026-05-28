@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚔️ RPG Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --gold-dark: #7A5A1E;
+    --parchment: #F5EDD8;
+    --parchment-dark: #E8D9B0;
+    --ink: #2A1A0A;
+    --ink-light: #5C3D1A;
+    --blood: #8B1A1A;
+    --blood-light: #C0392B;
+    --stone: #3A3228;
+    --stone-light: #544940;
+    --magic: #6B3FA0;
+    --magic-light: #9B6FD0;
+    --shadow: rgba(0,0,0,0.6);
+  }
+
+  body {
+    font-family: 'Crimson Text', Georgia, serif;
+    background-color: #1A1208;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(90,50,10,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(60,30,5,0.5) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='none'/%3E%3Cpath d='M0 0h80v80' fill='none' stroke='%23ffffff06' stroke-width='0.5'/%3E%3Cpath d='M40 0v80M0 40h80' stroke='%23ffffff04' stroke-width='0.3'/%3E%3C/svg%3E");
+    color: var(--parchment);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .site-header {
+    text-align: center;
+    padding: 50px 20px 30px;
+    position: relative;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; max-width: 90%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .site-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4), 0 2px 4px rgba(0,0,0,0.8);
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+  }
+  .site-header .subtitle {
+    font-family: 'Crimson Text', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(245,237,216,0.5);
+    margin-top: 8px;
+    letter-spacing: 0.15em;
+  }
+  .crown-deco {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 12px rgba(201,168,76,0.6));
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    gap: 32px;
+  }
+
+  /* PANEL (parchment card) */
+  .panel {
+    background: linear-gradient(160deg, #F5EDD8 0%, #EDD9A3 40%, #E8D0A0 100%);
+    border-radius: 4px;
+    position: relative;
+    color: var(--ink);
+    box-shadow:
+      0 0 0 1px rgba(201,168,76,0.3),
+      0 0 0 3px rgba(0,0,0,0.5),
+      0 20px 60px rgba(0,0,0,0.7),
+      inset 0 1px 0 rgba(255,255,255,0.3);
+    overflow: hidden;
+  }
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* PANEL CORNERS */
+  .panel-inner { padding: 32px 36px; position: relative; }
+  .corner {
+    position: absolute;
+    width: 28px; height: 28px;
+    color: var(--gold-dark);
+    font-size: 18px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+  .corner-tl { top: 8px; left: 8px; }
+  .corner-tr { top: 8px; right: 8px; transform: scaleX(-1); }
+  .corner-bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
+  .corner-br { bottom: 8px; right: 8px; transform: scale(-1); }
+
+  /* PANEL TITLE */
+  .panel-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(122,90,30,0.3);
+    letter-spacing: 0.1em;
+    position: relative;
+  }
+  .panel-title .title-icon {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1.1em;
+    vertical-align: -2px;
+  }
+  .panel-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  /* POINTS BAR */
+  .points-section {
+    background: var(--ink);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .points-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .points-bar-wrap {
+    flex: 1;
+    min-width: 120px;
+    height: 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .points-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #7B9E3A, #C9A84C);
+    transition: width 0.3s ease, background 0.3s ease;
+  }
+  .points-bar-fill.warning { background: linear-gradient(90deg, #C0392B, #E74C3C); }
+  .points-number {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    min-width: 60px;
+    text-align: right;
+    transition: color 0.3s;
+  }
+  .points-number.warning { color: #E74C3C; }
+  .points-number span { font-size: 0.75rem; color: rgba(201,168,76,0.6); margin-left: 2px; }
+
+  /* FORM GRID */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .field label .stat-icon { margin-right: 5px; }
+  .field input[type="text"],
+  .field input[type="number"] {
+    background: rgba(42,26,10,0.08);
+    border: 1px solid rgba(122,90,30,0.4);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'Crimson Text', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+  }
+  .field input[type="number"] { text-align: center; font-size: 1.2rem; font-weight: 600; }
+
+  /* STAT WIDGET */
+  .stat-widget {
+    background: rgba(42,26,10,0.05);
+    border: 1px solid rgba(122,90,30,0.25);
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .stat-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    color: var(--ink-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .stat-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .stat-btn {
+    width: 30px; height: 30px;
+    border: 1px solid rgba(122,90,30,0.5);
+    background: rgba(42,26,10,0.1);
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    font-weight: 700;
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+  }
+  .stat-btn:hover:not(:disabled) { background: var(--gold); color: white; border-color: var(--gold-dark); }
+  .stat-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .stat-value {
+    flex: 1;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-dots {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1px solid rgba(122,90,30,0.4);
+    background: rgba(122,90,30,0.1);
+    transition: all 0.15s;
+  }
+  .dot.filled { background: var(--gold); border-color: var(--gold-dark); }
+
+  /* BUTTONS */
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.15s;
+  }
+  .btn:hover::after { background: rgba(255,255,255,0.08); }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: linear-gradient(180deg, #8B1A1A 0%, #6B1010 100%);
+    color: var(--parchment);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    border: 1px solid rgba(201,50,50,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 5px 16px rgba(139,26,26,0.6), inset 0 1px 0 rgba(255,255,255,0.1); }
+
+  .btn-secondary {
+    background: linear-gradient(180deg, #3A3228 0%, #2A2218 100%);
+    color: var(--gold-light);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+  .btn-secondary:hover { border-color: rgba(201,168,76,0.5); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-light);
+    border: 1px solid rgba(122,90,30,0.3);
+    box-shadow: none;
+  }
+  .btn-ghost:hover { background: rgba(201,168,76,0.1); }
+
+  /* ERROR */
+  .error-msg {
+    display: none;
+    background: rgba(139,26,26,0.12);
+    border: 1px solid rgba(139,26,26,0.4);
+    border-left: 3px solid var(--blood);
+    padding: 10px 14px;
+    border-radius: 4px;
+    color: var(--blood);
+    font-size: 0.95rem;
+    margin-top: 12px;
+  }
+  .error-msg.visible { display: block; }
+
+  /* CREATED CHARACTER CARD */
+  .created-card {
+    display: none;
+    margin-top: 24px;
+    background: var(--ink);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    animation: fadeInUp 0.4s ease both;
+  }
+  .created-card.visible { display: block; }
+
+  .created-card-header {
+    background: linear-gradient(135deg, #2A1A0A 0%, #3A2810 100%);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+  }
+  .created-card-header::after {
+    content: '✦ PERSONAGEM FORJADO ✦';
+    position: absolute;
+    top: 8px; right: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: rgba(201,168,76,0.45);
+  }
+  .created-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--stone-light);
+    border: 2px solid rgba(201,168,76,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.7rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(201,168,76,0.08);
+  }
+  .created-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    text-shadow: 0 0 20px rgba(201,168,76,0.3);
+    line-height: 1.2;
+  }
+  .created-class-badge {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 10px;
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+  }
+
+  .created-card-body {
+    padding: 20px 22px;
+  }
+  .created-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 500px) { .created-stats-row { grid-template-columns: 1fr 1fr; } }
+
+  .created-stat {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .created-stat:hover { border-color: rgba(201,168,76,0.3); }
+  .created-stat-icon { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+  .created-stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: rgba(245,237,216,0.4);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .created-stat-value {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    display: block;
+    line-height: 1;
+  }
+  .created-stat-bar {
+    width: 100%; height: 3px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .created-stat-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  }
+
+  .created-footer {
+    border-top: 1px solid rgba(201,168,76,0.12);
+    padding-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .created-points-badge {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-light);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+  }
+  .created-success {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    color: #7AB84A;
+    letter-spacing: 0.1em;
+  }
+
+  /* SEARCH SECTION */
+  .search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: flex-end;
+  }
+  .search-row .field { flex: 1; min-width: 140px; }
+  .search-row select {
+    background: rgba(42,26,10,0.08);
+    border: 1px solid rgba(122,90,30,0.4);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: 'Crimson Text', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    width: 100%;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A5A1E' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+  }
+  .search-row select:focus { outline: none; border-color: var(--gold); }
+
+  /* PLAYER CARDS */
+  .players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .player-card {
+    background: var(--ink);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 6px;
+    padding: 18px;
+    color: var(--parchment);
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .player-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .player-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+
+  .player-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .player-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--stone-light);
+    border: 2px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .player-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    line-height: 1.2;
+  }
+  .player-class {
+    font-size: 0.8rem;
+    color: rgba(245,237,216,0.5);
+    font-style: italic;
+  }
+
+  .stats-grid-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 4px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .stat-pill-name {
+    font-size: 0.72rem;
+    color: rgba(245,237,216,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: 'Cinzel', serif;
+  }
+  .stat-pill-val {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+  .stat-pill-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  .stat-pill-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+
+  .player-footer {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+  .points-badge {
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-light);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* DELETE BUTTON */
+  .btn-delete {
+    background: transparent;
+    border: 1px solid rgba(139,26,26,0.35);
+    color: rgba(240,128,128,0.6);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-delete:hover {
+    background: rgba(139,26,26,0.25);
+    border-color: rgba(192,57,43,0.7);
+    color: #F08080;
+  }
+
+  /* CONFIRM DELETE OVERLAY inside card */
+  .delete-confirm {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(20,8,4,0.93);
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+    backdrop-filter: blur(2px);
+  }
+  .delete-confirm.active { display: flex; }
+  .delete-confirm-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: var(--parchment);
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+  }
+  .delete-confirm-text strong { color: var(--gold-light); display: block; margin-top: 4px; font-size: 1rem; }
+  .delete-confirm-skull { font-size: 2rem; margin-bottom: 4px; }
+  .delete-confirm-btns { display: flex; gap: 10px; }
+  .btn-confirm-yes {
+    background: linear-gradient(180deg, #8B1A1A, #6B1010);
+    border: 1px solid rgba(192,57,43,0.5);
+    color: var(--parchment);
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-confirm-yes:hover { background: linear-gradient(180deg, #A02020, #8B1A1A); }
+  .btn-confirm-no {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--gold-light);
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-confirm-no:hover { background: rgba(201,168,76,0.12); }
+
+  /* CLASS BADGE */
+  .class-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+  }
+  .class-Guerreiro { background: rgba(139,26,26,0.3); color: #F08080; border: 1px solid rgba(139,26,26,0.5); }
+  .class-Arqueiro  { background: rgba(59,109,17,0.3); color: #90C060; border: 1px solid rgba(59,109,17,0.5); }
+  .class-Mago      { background: rgba(107,63,160,0.3); color: #B090E0; border: 1px solid rgba(107,63,160,0.5); }
+  .class-Aventureiro { background: rgba(201,168,76,0.2); color: #D4A840; border: 1px solid rgba(201,168,76,0.4); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(122,90,30,0.3), transparent);
+    margin: 20px 0;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--ink-light);
+    font-style: italic;
+    font-size: 1.1rem;
+  }
+  .empty-state .big-icon { font-size: 2.5rem; display: block; margin-bottom: 12px; opacity: 0.4; }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .panel { animation: fadeInUp 0.5s ease both; }
+  .panel:nth-child(2) { animation-delay: 0.1s; }
+  .player-card { animation: fadeInUp 0.35s ease both; }
+
+  @media (max-width: 600px) {
+    .panel-inner { padding: 20px 18px; }
+    .form-grid { grid-template-columns: 1fr 1fr; }
+    .btn-row { flex-direction: column; }
+    .btn { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="crown-deco">⚔️</span>
+  <h1>Criador de Personagens</h1>
+  <p class="subtitle">Forja tua lenda nas terras de Eldoria</p>
+</header>
+
+<main class="container">
+
+  <!-- PAINEL CRIAR -->
+  <div class="panel">
+    <span class="corner corner-tl">✦</span>
+    <span class="corner corner-tr">✦</span>
+    <span class="corner corner-bl">✦</span>
+    <span class="corner corner-br">✦</span>
+
+    <div class="panel-inner">
+      <h2 class="panel-title"><span class="title-icon">📜</span>Criar Personagem</h2>
+
+      <!-- PONTOS -->
+      <div class="points-section">
+        <div class="points-label">Pontos restantes</div>
+        <div class="points-bar-wrap">
+          <div class="points-bar-fill" id="pointsBarFill" style="width: 100%"></div>
+        </div>
+        <div class="points-number" id="pointsDisplay">20 <span>/ 20</span></div>
+      </div>
+
+      <!-- NOME -->
+      <div class="form-grid" style="grid-template-columns: 1fr; margin-bottom: 20px;">
+        <div class="field">
+          <label>🧝 Nome do Personagem</label>
+          <input type="text" id="name" placeholder="Ex: Thalindor, Sombra, Alderik...">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <p style="font-family:'Cinzel',serif; font-size:0.78rem; color:var(--ink-light); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; text-align:center;">Atributos — distribua seus 20 pontos</p>
+
+      <!-- STATS WIDGETS -->
+      <div class="form-grid" id="statsGrid">
+        <div class="stat-widget">
+          <div class="stat-name">⚔️ Força</div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="changeStat('force',-1)">−</button>
+            <div class="stat-value" id="force-val">0</div>
+            <button class="stat-btn" onclick="changeStat('force',1)">+</button>
+          </div>
+          <div class="stat-dots" id="force-dots"></div>
+        </div>
+        <div class="stat-widget">
+          <div class="stat-name">🏹 Agilidade</div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="changeStat('agility',-1)">−</button>
+            <div class="stat-value" id="agility-val">0</div>
+            <button class="stat-btn" onclick="changeStat('agility',1)">+</button>
+          </div>
+          <div class="stat-dots" id="agility-dots"></div>
+        </div>
+        <div class="stat-widget">
+          <div class="stat-name">🔮 Inteligência</div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="changeStat('inteligence',-1)">−</button>
+            <div class="stat-value" id="inteligence-val">0</div>
+            <button class="stat-btn" onclick="changeStat('inteligence',1)">+</button>
+          </div>
+          <div class="stat-dots" id="inteligence-dots"></div>
+        </div>
+        <div class="stat-widget">
+          <div class="stat-name">🍀 Sorte</div>
+          <div class="stat-controls">
+            <button class="stat-btn" onclick="changeStat('luck',-1)">−</button>
+            <div class="stat-value" id="luck-val">0</div>
+            <button class="stat-btn" onclick="changeStat('luck',1)">+</button>
+          </div>
+          <div class="stat-dots" id="luck-dots"></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="createPlayer()">⚔️ Forjar Personagem</button>
+        <button class="btn btn-secondary" onclick="createAuto()">🎲 Criar Automático</button>
+        <button class="btn btn-ghost" onclick="generateName()">📖 Gerar Nome</button>
+        <button class="btn btn-ghost" onclick="resetStats()">↺ Resetar Pontos</button>
+      </div>
+
+      <div class="error-msg" id="error"></div>
+      <div class="created-card" id="result"></div>
+    </div>
+  </div>
+
+  <!-- PAINEL BUSCAR -->
+  <div class="panel">
+    <span class="corner corner-tl">✦</span>
+    <span class="corner corner-tr">✦</span>
+    <span class="corner corner-bl">✦</span>
+    <span class="corner corner-br">✦</span>
+
+    <div class="panel-inner">
+      <h2 class="panel-title"><span class="title-icon">🗺️</span>Guilda dos Aventureiros</h2>
+
+      <div class="search-row">
+        <div class="field">
+          <label>🔍 Buscar por nome</label>
+          <input type="text" id="searchName" placeholder="Nome do herói...">
+        </div>
+        <div class="field">
+          <label>⚜️ Filtrar por classe</label>
+          <select id="searchClass">
+            <option value="">Todas as classes</option>
+            <option>Guerreiro</option>
+            <option>Arqueiro</option>
+            <option>Mago</option>
+            <option>Aventureiro</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="search()" style="align-self:flex-end; white-space:nowrap;">🔎 Buscar</button>
+      </div>
+
+      <div id="players"></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const API = "";
+// ⚠️ Se o delete não funcionar, adicione ao seu Flask:
+//    from flask_cors import CORS
+//    CORS(app)
+// E instale: pip install flask-cors
+const MAX_POINTS = 20;
+const MAX_PER_STAT = 10;
+
+const stats = { force: 0, agility: 0, inteligence: 0, luck: 0 };
+
+function usedPoints() {
+  return stats.force + stats.agility + stats.inteligence + stats.luck;
+}
+
+function remainingPoints() {
+  return MAX_POINTS - usedPoints();
+}
+
+function updatePointsDisplay() {
+  const rem = remainingPoints();
+  const pct = (rem / MAX_POINTS) * 100;
+  const fill = document.getElementById('pointsBarFill');
+  const num = document.getElementById('pointsDisplay');
+
+  fill.style.width = pct + '%';
+  num.innerHTML = rem + ' <span>/ ' + MAX_POINTS + '</span>';
+
+  if (rem <= 5) {
+    fill.classList.add('warning');
+    num.classList.add('warning');
+  } else {
+    fill.classList.remove('warning');
+    num.classList.remove('warning');
+  }
+
+  ['force','agility','inteligence','luck'].forEach(s => updateDots(s));
+  updateButtons();
+}
+
+function updateDots(stat) {
+  const container = document.getElementById(stat + '-dots');
+  container.innerHTML = '';
+  for (let i = 0; i < MAX_PER_STAT; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i < stats[stat] ? ' filled' : '');
+    container.appendChild(dot);
+  }
+}
+
+function updateButtons() {
+  const rem = remainingPoints();
+  ['force','agility','inteligence','luck'].forEach(s => {
+    const plusBtns = document.querySelectorAll('button[onclick*="changeStat(\'' + s + '\',1)"]');
+    plusBtns.forEach(btn => {
+      btn.disabled = rem <= 0 || stats[s] >= MAX_PER_STAT;
+    });
+    const minusBtns = document.querySelectorAll('button[onclick*="changeStat(\'' + s + '\',-1)"]');
+    minusBtns.forEach(btn => {
+      btn.disabled = stats[s] <= 0;
+    });
+  });
+}
+
+function changeStat(stat, delta) {
+  const next = stats[stat] + delta;
+  if (next < 0 || next > MAX_PER_STAT) return;
+  if (delta > 0 && remainingPoints() <= 0) return;
+  stats[stat] = next;
+  document.getElementById(stat + '-val').textContent = next;
+  updatePointsDisplay();
+}
+
+function resetStats() {
+  ['force','agility','inteligence','luck'].forEach(s => {
+    stats[s] = 0;
+    document.getElementById(s + '-val').textContent = '0';
+  });
+  updatePointsDisplay();
+}
+
+function showError(msg) {
+  const el = document.getElementById('error');
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+
+function clearError() {
+  document.getElementById('error').classList.remove('visible');
+}
+
+const CLASS_ICONS_MAP = { 'Guerreiro': '⚔️', 'Arqueiro': '🏹', 'Mago': '🔮', 'Aventureiro': '🗺️' };
+const CLASS_COLORS = {
+  'Guerreiro':   { bg: 'rgba(139,26,26,0.35)',  color: '#F08080', border: 'rgba(139,26,26,0.6)' },
+  'Arqueiro':    { bg: 'rgba(59,109,17,0.35)',   color: '#90C060', border: 'rgba(59,109,17,0.6)' },
+  'Mago':        { bg: 'rgba(107,63,160,0.35)',  color: '#B090E0', border: 'rgba(107,63,160,0.6)' },
+  'Aventureiro': { bg: 'rgba(201,168,76,0.2)',   color: '#D4A840', border: 'rgba(201,168,76,0.5)' }
+};
+
+function showResult(data) {
+  const el = document.getElementById('result');
+  const icon = CLASS_ICONS_MAP[data.class] || '🧙';
+  const cc = CLASS_COLORS[data.class] || CLASS_COLORS['Aventureiro'];
+  const statsData = [
+    { icon: '⚔️', label: 'Força',       key: 'force' },
+    { icon: '🏹', label: 'Agilidade',   key: 'agility' },
+    { icon: '🔮', label: 'Inteligência',key: 'inteligence' },
+    { icon: '🍀', label: 'Sorte',       key: 'luck' },
+  ];
+  const statsHTML = statsData.map(s => {
+    const val = Number(data[s.key]) || 0;
+    const pct = Math.round((val / 10) * 100);
+    return `
+      <div class="created-stat">
+        <span class="created-stat-icon">${s.icon}</span>
+        <span class="created-stat-label">${s.label}</span>
+        <span class="created-stat-value">${val}</span>
+        <div class="created-stat-bar"><div class="created-stat-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="created-card-header">
+      <div class="created-avatar">${icon}</div>
+      <div>
+        <div class="created-name">${data.name}</div>
+        <span class="created-class-badge" style="background:${cc.bg}; color:${cc.color}; border:1px solid ${cc.border}">${data.class}</span>
+      </div>
+    </div>
+    <div class="created-card-body">
+      <div class="created-stats-row">${statsHTML}</div>
+      <div class="created-footer">
+        <div class="created-success">✔ Personagem criado com sucesso</div>
+        <span class="created-points-badge">✨ ${data.point} pontos livres</span>
+      </div>
+    </div>
+  `;
+  el.classList.add('visible');
+}
+
+function createPlayer() {
+  clearError();
+  const name = document.getElementById('name').value.trim();
+
+  if (!name) {
+    showError('⚠️ Digite um nome para o personagem antes de forjá-lo.');
+    return;
+  }
+
+  // Valida nome duplicado antes de criar
+  fetch(`${API}/api/searchCharacter?name=${encodeURIComponent(name)}`)
+    .then(r => r.json())
+    .then(existing => {
+      const duplicate = existing.find(p => p.name.trim().toLowerCase() === name.toLowerCase());
+      if (duplicate) {
+        showError(`⚠️ Já existe um herói chamado "${duplicate.name}" nos registros da guilda! Escolha outro nome.`);
+        return;
+      }
+      // Nome livre — prossegue com a criação
+      fetch(`${API}/api/createPlayer?name=${encodeURIComponent(name)}&force=${stats.force}&agility=${stats.agility}&inteligence=${stats.inteligence}&luck=${stats.luck}`)
+        .then(r => r.json())
+        .then(data => showResult(data))
+        .catch(() => showError('⚠️ Não foi possível conectar ao servidor.'));
+    })
+    .catch(() => showError('⚠️ Não foi possível conectar ao servidor.'));
+}
+
+function createAuto() {
+  clearError();
+  fetch(`${API}/api/createPlayer`)
+    .then(r => r.json())
+    .then(data => {
+      showResult(data);
+      if (data.name) document.getElementById('name').value = data.name;
+      if (data.force !== undefined) {
+        resetStats();
+        ['force','agility','inteligence','luck'].forEach(s => {
+          stats[s] = data[s] || 0;
+          document.getElementById(s + '-val').textContent = stats[s];
+        });
+        updatePointsDisplay();
+      }
+    })
+    .catch(() => showError('⚠️ Não foi possível conectar ao servidor.'));
+}
+
+function generateName() {
+  fetch(`${API}/api/createPlayer`)
+    .then(r => r.json())
+    .then(data => { if (data.name) document.getElementById('name').value = data.name; })
+    .catch(() => showError('⚠️ Não foi possível conectar ao servidor.'));
+}
+
+function search() {
+  const name = document.getElementById('searchName').value;
+  const classe = document.getElementById('searchClass').value;
+  let url = `${API}/api/searchCharacter?`;
+  if (name) url += `name=${name}&`;
+  if (classe) url += `class=${classe}`;
+
+  fetch(url)
+    .then(r => r.json())
+    .then(data => renderPlayers(data))
+    .catch(() => renderPlayers(null));
+}
+
+const CLASS_ICONS = {
+  'Guerreiro': '⚔️', 'Arqueiro': '🏹', 'Mago': '🔮', 'Aventureiro': '🗺️'
+};
+
+function renderPlayers(players) {
+  const container = document.getElementById('players');
+  container.innerHTML = '';
+
+  if (!players || !players.length) {
+    container.innerHTML = `<div class="empty-state"><span class="big-icon">🌫️</span>Nenhum personagem encontrado nos registros da guilda.</div>`;
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'players-grid';
+
+  players.forEach((p, i) => {
+    const icon = CLASS_ICONS[p.class] || '🧙';
+    const totalStats = (p.force||0) + (p.agility||0) + (p.inteligence||0) + (p.luck||0);
+
+    const card = document.createElement('div');
+    card.className = 'player-card';
+    card.style.animationDelay = (i * 0.06) + 's';
+
+    card.innerHTML = `
+      <div class="player-header">
+        <div class="player-avatar">${icon}</div>
+        <div>
+          <div class="player-name">${p.name}</div>
+          <span class="class-badge class-${p.class}">${p.class}</span>
+        </div>
+      </div>
+      <div class="stats-grid-card">
+        ${statPill('⚔️ Força', p.force, MAX_PER_STAT)}
+        ${statPill('🏹 Agilidade', p.agility, MAX_PER_STAT)}
+        ${statPill('🔮 Inteligência', p.inteligence, MAX_PER_STAT)}
+        ${statPill('🍀 Sorte', p.luck, MAX_PER_STAT)}
+      </div>
+      <div class="player-footer">
+        <span style="font-size:0.78rem; color:rgba(245,237,216,0.4);">Total: ${totalStats} pts</span>
+        <span class="points-badge">✨ ${p.point} pts livres</span>
+        <button class="btn-delete" onclick="askDelete(this, ${p.id}, '${p.name}')">🗑 Deletar</button>
+      </div>
+      <div class="delete-confirm">
+        <div class="delete-confirm-skull">💀</div>
+        <div class="delete-confirm-text">Deseja apagar este herói?<strong>${p.name}</strong></div>
+        <div class="delete-confirm-btns">
+          <button class="btn-confirm-yes" onclick="confirmDelete(this, ${p.id})">⚔️ Sim, deletar</button>
+          <button class="btn-confirm-no" onclick="cancelDelete(this)">✕ Cancelar</button>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function statPill(label, value, max) {
+  const pct = Math.round(((value||0) / max) * 100);
+  return `
+    <div class="stat-pill" style="flex-direction: column; align-items: stretch; gap: 4px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="stat-pill-name">${label}</span>
+        <span class="stat-pill-val">${value||0}</span>
+      </div>
+      <div class="stat-pill-bar"><div class="stat-pill-bar-fill" style="width:${pct}%"></div></div>
+    </div>
+  `;
+}
+
+function askDelete(btn, id, name) {
+  const card = btn.closest('.player-card');
+  card.querySelector('.delete-confirm').classList.add('active');
+}
+
+function cancelDelete(btn) {
+  btn.closest('.delete-confirm').classList.remove('active');
+}
+
+function confirmDelete(btn, id) {
+  const card = btn.closest('.player-card');
+  const overlay = btn.closest('.delete-confirm');
+  overlay.innerHTML = '<div style="font-family:Cinzel,serif;color:var(--gold-light);font-size:0.8rem;letter-spacing:0.1em;">⏳ Deletando...</div>';
+
+  fetch(`${API}/api/deleteCharacter?id=${id}`, {
+    method: 'GET',
+    headers: { 'Accept': 'application/json, text/plain, */*' }
+  })
+    .then(r => {
+      // Verifica se o servidor respondeu com sucesso (2xx)
+      if (!r.ok) {
+        return r.text().then(t => { throw new Error(t || 'Erro ' + r.status); });
+      }
+      return r.text();
+    })
+    .then(msg => {
+      // Só remove visualmente após confirmação do servidor
+      if (msg && msg.toLowerCase().includes('erro')) {
+        throw new Error(msg);
+      }
+      card.style.transition = 'opacity 0.4s, transform 0.4s';
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.92)';
+      setTimeout(() => {
+        card.remove();
+        const grid = document.querySelector('.players-grid');
+        if (grid && !grid.querySelector('.player-card')) {
+          grid.innerHTML = '';
+          document.getElementById('players').innerHTML =
+            '<div class="empty-state"><span class="big-icon">🌫️</span>Nenhum personagem encontrado nos registros da guilda.</div>';
+        }
+      }, 400);
+    })
+    .catch(err => {
+      const msg = err.message || 'Erro desconhecido';
+      overlay.innerHTML = `
+        <div style="color:#F08080;font-family:Cinzel,serif;font-size:0.78rem;text-align:center;line-height:1.6;">
+          ⚠️ Falha ao deletar.<br>
+          <span style="font-size:0.68rem;opacity:0.7;">${msg}</span><br>
+          <button class="btn-confirm-no" style="margin-top:12px" onclick="cancelDelete(this)">Fechar</button>
+        </div>`;
+    });
+}
+
+updatePointsDisplay();
+</script>
+</body>
+</html>
